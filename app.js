@@ -32,7 +32,25 @@ const showImages = (images) => {
 const getImages = (query) => {
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
-    .then(data => showImages(data.hits))
+    .then(data => {
+      if (data.hits.length !== 0) {
+        showImages(data.hits)
+      } else {
+        Swal.fire({
+          title: 'Nothing found',
+          width: 600,
+          padding: '3em',
+          color: '#716add',
+          background: '#fff url(/images/trees.png)',
+          backdrop: `
+            rgba(0,0,123,0.4)
+            url("/images/nyan-cat.gif")
+            left top
+            no-repeat
+          `
+        })
+      }
+    })
     .catch(err => console.log(err))
 }
 
@@ -79,8 +97,8 @@ const createSlider = () => {
   document.querySelector('.main').style.display = 'block';
   // hide image aria
   imagesArea.style.display = 'none';
-  const duration = document.getElementById('duration').value || 1000;
-  if (duration <= 0) {
+  const durationValue = duration.value || 1000;
+  if (durationValue <= 0 || durationValue % 1 !== 0) {
     Swal.fire({
       title: 'Please enter a valid timer',
       width: 600,
@@ -109,7 +127,7 @@ const createSlider = () => {
   timer = setInterval(function () {
     slideIndex++;
     changeSlide(slideIndex);
-  }, duration);
+  }, durationValue);
 }
 
 // change slider index 
