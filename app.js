@@ -4,6 +4,7 @@ const galleryHeader = document.querySelector('.gallery-header');
 const searchBtn = document.getElementById('search-btn');
 const sliderBtn = document.getElementById('create-slider');
 const sliderContainer = document.getElementById('sliders');
+const duration = document.getElementById('duration');
 // selected image 
 let sliders = [];
 
@@ -51,7 +52,19 @@ var timer
 const createSlider = () => {
   // check slider image length
   if (sliders.length < 2) {
-    alert('Select at least 2 image.')
+    Swal.fire({
+      title: 'Please select minimum 1',
+      width: 600,
+      padding: '3em',
+      color: '#716add',
+      background: '#fff url(/images/trees.png)',
+      backdrop: `
+        rgba(0,0,123,0.4)
+        url("/images/nyan-cat.gif")
+        left top
+        no-repeat
+      `
+    })
     return;
   }
   // crate slider previous next area
@@ -62,7 +75,6 @@ const createSlider = () => {
   <span class="prev" onclick="changeItem(-1)"><i class="fas fa-chevron-left"></i></span>
   <span class="next" onclick="changeItem(1)"><i class="fas fa-chevron-right"></i></span>
   `;
-
   sliderContainer.appendChild(prevNext)
   document.querySelector('.main').style.display = 'block';
   // hide image aria
@@ -82,6 +94,7 @@ const createSlider = () => {
         no-repeat
       `
     })
+    imagesArea.style.display = 'block';
     return;
   }
   sliders.forEach(slide => {
@@ -134,5 +147,7 @@ searchBtn.addEventListener('click', function () {
 })
 
 sliderBtn.addEventListener('click', function () {
-  createSlider()
+  createSlider();
+  //clearing duration input
+  duration.value = '';
 })
